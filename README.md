@@ -17,7 +17,9 @@ npm start
 ## UI setup (App.js)
 ```html
 <div className="response-box">Response here</div>
-<button>Simple Get</button>
+<div className="request-box">
+  <button>Simple Get</button>
+</div>
 ```
 
 ```html
@@ -27,6 +29,16 @@ npm start
   height: 100px;
   color: black;
   margin-bottom: 10px;
+}
+```
+
+```html
+.request-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 }
 ```
 
@@ -80,8 +92,10 @@ const handleDynamicGet = async () => {
 };
 ```
 ```html
-<input type="text" value={text} onChange={(e) => handleChange(e, "text")} placeholder="text" />
-<button onClick={handleDynamicGet}>Dynamic Get</button>
+<div className="request-box">
+  <input type="text" value={text} onChange={(e) => handleChange(e, "text")} placeholder="text" />
+  <button onClick={handleDynamicGet}>Dynamic Get</button>
+</div>
 ```
 ```html
 function handleChange(e, target){
@@ -107,8 +121,10 @@ const handlePokemonGet = async () => {
 };
 ```
 ```html
-<input type="text" value={pokemon} onChange={(e) => handleChange(e, "pokemon")} placeholder="pokemon" />
-<button onClick={handlePokemonGet}>Pokemon</button>
+<div className="request-box">
+  <input type="text" value={pokemon} onChange={(e) => handleChange(e, "pokemon")} placeholder="pokemon" />
+  <button onClick={handlePokemonGet}>Pokemon</button>
+</div>
 ```
 ```html
 function handleChange(e, target){
@@ -122,24 +138,24 @@ function handleChange(e, target){
 
 ## Implementing add-user
 ```html
-const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
+const [name, setName] = useState('')
 ```
 ```html
 const handleAddUser = async () => {
-  try {
-    const res = await axios.post('http://localhost:5001/v1/add-user', { email, password });
-    setResponse(res.data);
-  } catch (error) {
-    console.error('Error adding user:', error);
-    setResponse('Error adding user');
-  }
+    try {
+      const res = await axios.post('http://localhost:5001/v1/users', { name });
+      setResponse(JSON.stringify(res.data));
+    } catch (error) {
+      console.error('Error adding user:', error);
+      setResponse('Error adding user');
+    }
 };
 ```
 ```html
-<input type="text" value={email} onChange={(e) => handleChange(e, "email")} placeholder="email" />
-<input type="text" value={password} onChange={(e) => handleChange(e, "password")} placeholder="password" />
-<button onClick={handleAddUser}>Add User</button>
+<div className="request-box">
+  <input type="text" value={name} onChange={(e) => handleChange(e, "name")} placeholder="name" />
+  <button onClick={handleAddUser}>Add User</button>
+</div>
 ```
 ```html
 function handleChange(e, target){
@@ -147,10 +163,43 @@ function handleChange(e, target){
     setText(e.target.value)
   } else if (target == "pokemon") {
     setPokemon(e.target.value)
-  } else if (target == "email") {
-    setEmail(e.target.value)
-  } else if (target == "password") {
-    setPassword(e.target.value)
+  } else if (target == "name") {
+    setName(e.target.value)
+  }
+}
+```
+
+## Implementing get-users
+```html
+const [name2, setName2] = useState('')
+```
+```html
+const handleGetUsers = async () => {
+    try {
+      const res = await axios.get("http://localhost:5001/v1/users/" + name2);
+      setResponse(JSON.stringify(res.data));
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setResponse('Error fetching users');
+    }
+};
+```
+```html
+<div className="request-box">
+  <input type="text" value={name2} onChange={(e) => handleChange(e, "name2")} placeholder="name2" />
+  <button onClick={handleGetUsers}>Get Users</button>
+</div>
+```
+```html
+function handleChange(e, target){
+  if (target == "text") {
+    setText(e.target.value)
+  } else if (target == "pokemon") {
+    setPokemon(e.target.value)
+  } else if (target == "name") {
+    setName(e.target.value)
+  } else if (target == "name2") {
+    setName2(e.target.value)
   }
 }
 ```
