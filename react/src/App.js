@@ -92,7 +92,7 @@ function App() {
         <div className="request-box">
           <input type="text" value={name2} onChange={(e) => handleChange(e, "name2")} placeholder="name2" />
           <button onClick={handleGetUsers}>Get Users</button>
-      </div>
+        </div>
       </header>
     </div>
   );
